@@ -26,7 +26,7 @@ public final class TestStyleKit {
     //// Cache
 
     private struct Cache {
-        static let wirelessBlue: UIColor = UIColor(red: 0.278, green: 0.506, blue: 0.976, alpha: 1.000)
+        nonisolated(unsafe) static let wirelessBlue: UIColor = UIColor(red: 0.278, green: 0.506, blue: 0.976, alpha: 1.000)
     }
 
     //// Colors
