@@ -43,13 +43,11 @@ public final class SwiftLogoView: UIView {
     
     /// The aspect ratio for the content.
     public var aspectRatio: CGFloat {
-        
         return includesText ? 41 / 12 : 1
     }
     
     /// The intrinsic content size.
     public override var intrinsicContentSize: CGSize  {
-        
         return CGSize(width: pointSize, height: pointSize * aspectRatio)
     }
     
@@ -65,27 +63,22 @@ public final class SwiftLogoView: UIView {
     
     @available(iOS, unavailable)
     public required init?(coder aDecoder: NSCoder) {
-        
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Drawing
     
     public override func draw(_ rect: CGRect) {
-        
-        let frame = contentMode.rect(for: bounds, size: intrinsicContentSize)
-        
+        let frame = CGRect(contentMode: contentMode, bounds: bounds, size: intrinsicContentSize)
         if includesText {
-            
             drawSwiftLogoWithText(frame: frame)
-            
         } else {
-            
             drawSwiftLogo(frame: frame)
         }
     }
     
     private func drawSwiftLogoWithText(frame: CGRect = CGRect(x: 0, y: 0, width: 164, height: 48)) {
+        
         //// General Declarations
         // This non-generic function dramatically improves compilation times of complex expressions.
         func fastFloor(_ x: CGFloat) -> CGFloat { return floor(x) }
@@ -426,143 +419,3 @@ public final class SwiftLogoView: UIView {
         bezier2Path.fill()
     }
 }
-
-internal extension UIViewContentMode {
-    
-    func rect(for bounds: CGRect, size: CGSize) -> CGRect {
-        
-        switch self {
-            
-        case .redraw: fallthrough
-            
-        case .scaleToFill:
-            
-            return CGRect(origin: .zero, size: bounds.size)
-            
-        case .scaleAspectFit:
-            
-            let widthRatio = bounds.width / size.width
-            let heightRatio = bounds.height / size.height
-            
-            var newSize = bounds.size
-            
-            if (widthRatio < heightRatio) {
-                
-                newSize.height = bounds.size.width / size.width * size.height
-                
-            } else if (heightRatio < widthRatio) {
-                
-                newSize.width = bounds.size.height / size.height * size.width
-            }
-            
-            newSize = CGSize(width: ceil(newSize.width), height: ceil(newSize.height))
-            
-            var origin = bounds.origin
-            origin.x += (bounds.size.width - newSize.width) / 2.0
-            origin.y += (bounds.size.height - newSize.height) / 2.0
-            
-            return CGRect(origin: origin, size: newSize)
-            
-        case .scaleAspectFill:
-            
-            let widthRatio = (bounds.size.width / size.width)
-            let heightRatio = (bounds.size.height / size.height)
-            
-            var newSize = bounds.size
-            
-            if (widthRatio > heightRatio) {
-                
-                newSize.height = bounds.size.width / size.width * size.height
-                
-            } else if (heightRatio > widthRatio) {
-                
-                newSize.width = bounds.size.height / size.height * size.width
-            }
-            
-            newSize = CGSize(width: ceil(newSize.width), height: ceil(newSize.height))
-            
-            var origin = CGPoint()
-            origin.x = (bounds.size.width - newSize.width) / 2.0
-            origin.y = (bounds.size.height - newSize.height) / 2.0
-            
-            return CGRect(origin: origin, size: newSize)
-            
-        case .center:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = (bounds.size.width - rect.size.width) / 2.0
-            rect.origin.y = (bounds.size.height - rect.size.height) / 2.0
-            
-            return rect
-            
-        case .top:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.y = 0.0
-            rect.origin.x = (bounds.size.width - rect.size.width) / 2.0
-            
-            return rect
-            
-        case .bottom:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = (bounds.size.width - rect.size.width) / 2.0
-            rect.origin.y = bounds.size.height - rect.size.height
-            
-            return rect
-            
-        case .left:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = 0.0
-            rect.origin.y = (bounds.size.height - rect.size.height) / 2.0
-            
-            return rect
-            
-        case .right:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = bounds.size.width - rect.size.width
-            rect.origin.y = (bounds.size.height - rect.size.height) / 2.0
-            
-            return rect
-            
-        case .topLeft:
-            
-            return CGRect(origin: .zero, size: size)
-            
-        case .topRight:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = bounds.size.width - rect.size.width
-            rect.origin.y = 0.0
-            
-            return rect
-            
-        case .bottomLeft:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = 0.0
-            rect.origin.y = bounds.size.height - rect.size.height
-            
-            return rect
-            
-        case .bottomRight:
-            
-            var rect = CGRect(origin: .zero, size: size)
-            
-            rect.origin.x = bounds.size.width - rect.size.width
-            rect.origin.y = bounds.size.height - rect.size.height
-            
-            return rect
-        }
-    }
-}
-
