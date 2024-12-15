@@ -152,34 +152,35 @@ extension NSLineBreakMode: CacaoConvertible {
 /// Rendering options for a string when it is drawn.
 public struct NSStringDrawingOptions: OptionSet, ExpressibleByIntegerLiteral {
     
-    public static let usesLineFragmentOrigin = NSStringDrawingOptions(rawValue: (1 << 0))
-    public static let usesFontLeading = NSStringDrawingOptions(rawValue: (1 << 1))
-    public static let usesDeviceMetrics = NSStringDrawingOptions(rawValue: (1 << 3))
-    public static let truncatesLastVisibleLine = NSStringDrawingOptions(rawValue: (1 << 5))
-    
     public var rawValue: Int
     
     public init(rawValue: Int) {
-        
         self.rawValue = rawValue
     }
     
     public init(integerLiteral value: Int) {
-        
         self.rawValue = value
     }
     
     public init() {
-        
-        self = NSStringDrawingOptions.usesLineFragmentOrigin
+        self = .usesLineFragmentOrigin
     }
 }
+
+public extension NSStringDrawingOptions {
     
-    /// Expects `UIFont` value.
-    public let NSFontAttributeName = "NSFontAttributeName"
+    static var usesLineFragmentOrigin: NSStringDrawingOptions { NSStringDrawingOptions(rawValue: (1 << 0)) }
+    static var usesFontLeading: NSStringDrawingOptions { NSStringDrawingOptions(rawValue: (1 << 1)) }
+    static var usesDeviceMetrics: NSStringDrawingOptions { NSStringDrawingOptions(rawValue: (1 << 3)) }
+    static var truncatesLastVisibleLine: NSStringDrawingOptions { NSStringDrawingOptions(rawValue: (1 << 5)) }
     
-    /// Expects `UIColor` value.
-    public let NSForegroundColorAttributeName = "NSForegroundColorAttributeName"
+}
     
-    /// Expects `NSMutableParagraphStyle` value.
-    public let NSParagraphStyleAttributeName = "NSParagraphStyleAttributeName"
+/// Expects `UIFont` value.
+public let NSFontAttributeName = "NSFontAttributeName"
+    
+/// Expects `UIColor` value.
+public let NSForegroundColorAttributeName = "NSForegroundColorAttributeName"
+    
+/// Expects `NSMutableParagraphStyle` value.
+public let NSParagraphStyleAttributeName = "NSParagraphStyleAttributeName"

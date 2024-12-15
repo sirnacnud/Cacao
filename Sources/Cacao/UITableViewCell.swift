@@ -222,7 +222,6 @@ open class UITableViewCell: UIView {
     
     internal weak var tableView: UITableView?
     
-    @_versioned
     internal let style: UITableViewCellStyle
     
     // added as subview in `init()`

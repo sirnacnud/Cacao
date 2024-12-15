@@ -39,7 +39,7 @@ open class UIControl: UIView {
             
         let target = Target(target)
         
-        guard let index = targetActions[target, default: [:]][controlEvents,  default: []].index(of: action)
+        guard let index = targetActions[target, default: [:]][controlEvents,  default: []].firstIndex(of: action)
             else { return }
         
         targetActions[target, default: [:]][controlEvents,  default: []].remove(at: index)
@@ -120,14 +120,13 @@ private extension UIControl {
             self.value = value
         }
         
-        var hashValue: Int {
-            
-            return value?.hashValue ?? 0
-        }
-        
         static func == (lhs: Target, rhs: Target) -> Bool {
             
             return lhs.value == rhs.value
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            value?.hash(into: &hasher)
         }
     }
 }
@@ -147,14 +146,12 @@ public struct Selector: Hashable {
         self.action = action
     }
     
-    public var hashValue: Int {
-        
-        return name.hashValue
+    public static func == (lhs: Selector, rhs: Selector) -> Bool {
+        return lhs.name == rhs.name
     }
     
-    public static func == (lhs: Selector, rhs: Selector) -> Bool {
-        
-        return lhs.name == rhs.name
+    public func hash(into hasher: inout Hasher) {
+        name.hash(into: &hasher)
     }
 }
 
@@ -172,19 +169,22 @@ public struct UIControlState: OptionSet {
         
         self.rawValue = rawValue
     }
+}
+
+public extension UIControlState {
     
     /// The normal, or default state of a control—that is, enabled but neither selected nor highlighted.
-    public static let normal = UIControlState(rawValue: 0)
+    static var normal: UIControlState { UIControlState(rawValue: 0) }
     
-    public static let highlighted = UIControlState(rawValue: 1 << 0)
+    static var highlighted: UIControlState { UIControlState(rawValue: 1 << 0) }
     
-    public static let disabled = UIControlState(rawValue: 1 << 1)
+    static var disabled: UIControlState { UIControlState(rawValue: 1 << 1) }
     
-    public static let selected = UIControlState(rawValue: 1 << 2)
+    static var selected: UIControlState { UIControlState(rawValue: 1 << 2) }
     
-    public static let focused = UIControlState(rawValue: 1 << 3)
+    static var focused: UIControlState { UIControlState(rawValue: 1 << 3) }
     
-    public static let application = UIControlState(rawValue: 0x00FF0000)
+    static var application: UIControlState { UIControlState(rawValue: 0x00FF0000) }
 }
 
 public struct UIControlEvents: OptionSet {
@@ -192,30 +192,32 @@ public struct UIControlEvents: OptionSet {
     public let rawValue: Int
     
     public init(rawValue: Int = 0) {
-        
         self.rawValue = rawValue
     }
+}
+
+public extension UIControlEvents {
     
-    public static let touchDown = UIControlEvents(rawValue: 1 << 0)
-    public static let touchDownRepeat = UIControlEvents(rawValue: 1 << 1)
-    public static let touchDragInside = UIControlEvents(rawValue: 1 << 2)
-    public static let touchDragOutside = UIControlEvents(rawValue: 1 << 3)
-    public static let touchDragEnter = UIControlEvents(rawValue: 1 << 4)
-    public static let touchDragExit = UIControlEvents(rawValue: 1 << 5)
-    public static let touchUpInside = UIControlEvents(rawValue: 1 << 6)
-    public static let touchUpOutside = UIControlEvents(rawValue: 1 << 7)
-    public static let touchCancel = UIControlEvents(rawValue: 1 << 8)
-    public static let valueChanged = UIControlEvents(rawValue: 1 << 12)
-    public static let primaryActionTriggered = UIControlEvents(rawValue: 1 << 13)
-    public static let editingDidBegin = UIControlEvents(rawValue: 1 << 16)
-    public static let editingChanged = UIControlEvents(rawValue: 1 << 17)
-    public static let editingDidEnd = UIControlEvents(rawValue: 1 << 18)
-    public static let editingDidEndOnExit = UIControlEvents(rawValue: 1 << 19)
-    public static let allTouchEvents = UIControlEvents(rawValue: 0x00000FFF)
-    public static let allEditingEvents = UIControlEvents(rawValue: 0x000F0000)
-    public static let applicationReserved = UIControlEvents(rawValue: 0x0F000000)
-    public static let systemReserved = UIControlEvents(rawValue: 0xF0000000)
-    public static let allEvents = UIControlEvents(rawValue: 0xFFFFFFFF)
+    static var touchDown: UIControlEvents { UIControlEvents(rawValue: 1 << 0) }
+    static var touchDownRepeat: UIControlEvents { UIControlEvents(rawValue: 1 << 1) }
+    static var touchDragInside: UIControlEvents { UIControlEvents(rawValue: 1 << 2) }
+    static var touchDragOutside: UIControlEvents { UIControlEvents(rawValue: 1 << 3) }
+    static var touchDragEnter: UIControlEvents { UIControlEvents(rawValue: 1 << 4) }
+    static var touchDragExit: UIControlEvents { UIControlEvents(rawValue: 1 << 5) }
+    static var touchUpInside: UIControlEvents { UIControlEvents(rawValue: 1 << 6) }
+    static var touchUpOutside: UIControlEvents { UIControlEvents(rawValue: 1 << 7) }
+    static var touchCancel: UIControlEvents { UIControlEvents(rawValue: 1 << 8) }
+    static var valueChanged: UIControlEvents { UIControlEvents(rawValue: 1 << 12) }
+    static var primaryActionTriggered: UIControlEvents { UIControlEvents(rawValue: 1 << 13) }
+    static var editingDidBegin: UIControlEvents { UIControlEvents(rawValue: 1 << 16) }
+    static var editingChanged: UIControlEvents { UIControlEvents(rawValue: 1 << 17) }
+    static var editingDidEnd: UIControlEvents { UIControlEvents(rawValue: 1 << 18) }
+    static var editingDidEndOnExit: UIControlEvents { UIControlEvents(rawValue: 1 << 19) }
+    static var allTouchEvents: UIControlEvents { UIControlEvents(rawValue: 0x00000FFF) }
+    static var allEditingEvents: UIControlEvents { UIControlEvents(rawValue: 0x000F0000) }
+    static var applicationReserved: UIControlEvents { UIControlEvents(rawValue: 0x0F000000) }
+    static var systemReserved: UIControlEvents { UIControlEvents(rawValue: 0xF0000000) }
+    static var allEvents: UIControlEvents { UIControlEvents(rawValue: 0xFFFFFFFF) }
 }
 
 extension UIControlEvents: Hashable {

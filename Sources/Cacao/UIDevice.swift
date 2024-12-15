@@ -21,7 +21,7 @@ public final class UIDevice {
     // MARK: - Getting the Shared Device Instance
     
     /// Returns an object representing the current device.
-    public static let current = UIDevice()
+    public nonisolated(unsafe) static let current = UIDevice()
     
     private init() { }
     
@@ -216,7 +216,7 @@ public enum UIDeviceBatteryState: Int {
                 
                 let cString = UnsafeMutablePointer<CChar>.allocate(capacity: size)
                 
-                defer { cString.deallocate(capacity: size) }
+                defer { cString.deallocate() }
                 
                 sysctlbyname(name, cString, &size, nil, 0)
                 
@@ -237,7 +237,7 @@ public enum UIDeviceBatteryState: Int {
                 
                 var family: Family?
                 
-                for model in Family.all {
+                for model in Family.allCases {
                     
                     guard hardwareModel.hasPrefix(model.rawValue)
                         else { continue }
@@ -300,7 +300,7 @@ public enum UIDeviceBatteryState: Int {
     
     extension UIDevice.Mac {
         
-        enum Family: String, CustomStringConvertible {
+        enum Family: String, CustomStringConvertible, CaseIterable {
             
             case iMac
             case iMacPro
@@ -309,9 +309,7 @@ public enum UIDeviceBatteryState: Int {
             case MacBookAir
             case Macmini
             case MacPro
-            
-            static var all: [Family] = [iMacPro, iMac, MacBookPro, MacBookAir, MacBook, Macmini, MacPro]
-            
+                        
             var description: String {
                 
                 switch self {

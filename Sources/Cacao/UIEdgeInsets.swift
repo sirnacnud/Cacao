@@ -13,7 +13,7 @@ import Foundation
 /// Typically, edge insets are used during view layout to modify the view’s frame.
 /// Positive values cause the frame to be inset (or shrunk) by the specified amount.
 /// Negative values cause the frame to be outset (or expanded) by the specified amount.
-public struct UIEdgeInsets {
+public struct UIEdgeInsets: Equatable, Hashable {
     
     // MARK: - Properties
     
@@ -31,7 +31,7 @@ public struct UIEdgeInsets {
     
     // MARK: - Initialization
     
-    public static let zero = UIEdgeInsets()
+    public static var zero: UIEdgeInsets { UIEdgeInsets() }
     
     /// Initializes the edge inset struct values.
     public init(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) {
@@ -40,19 +40,6 @@ public struct UIEdgeInsets {
         self.left = left
         self.right = right
         self.top = top
-    }
-}
-
-// MARK: - Equatable
-
-extension UIEdgeInsets: Equatable {
-    
-    public static func == (lhs: UIEdgeInsets, rhs: UIEdgeInsets) -> Bool {
-        
-        return lhs.bottom == rhs.bottom
-            && lhs.left == rhs.left
-            && lhs.right == rhs.right
-            && lhs.top == rhs.top
     }
 }
 

@@ -30,6 +30,7 @@ public enum UIViewAnimationTransition: Int {
 }
 
 ///
+@preconcurrency
 public struct UIViewAnimationOptions: OptionSet {
     
     public let rawValue: Int

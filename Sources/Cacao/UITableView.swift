@@ -682,17 +682,17 @@ open class UITableView: UIScrollView {
     
     // MARK: - Private
     
-    internal static let defaultRowHeight: CGFloat = 44
+    internal static var defaultRowHeight: CGFloat { 44 }
     
-    internal static let defaultHeaderFooterHeight: CGFloat = 22
+    internal static var defaultHeaderFooterHeight: CGFloat { 22 }
     
-    internal static let defaultSeparatorColor = UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)
+    internal static var defaultSeparatorColor: UIColor { UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0) }
     
-    internal static let defaultSeparatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
+    internal static var defaultSeparatorInset: UIEdgeInsets { UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0) }
     
-    private static let defaultDataSource = DefaultDataSource()
+    internal static var defaultDataSource: UITableViewDataSource { DefaultDataSource() }
     
-    private static let defaultDelegate = DefaultDelegate()
+    internal static var defaultDelegate: UITableViewDelegate { DefaultDelegate() }
     
     private var _dataSource: UITableViewDataSource {
         

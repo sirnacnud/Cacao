@@ -40,7 +40,7 @@ public struct CacaoOptions {
     public init() { }
 }
 
-internal private(set) var _UIApp: UIApplication!
+internal nonisolated(unsafe) private(set) var _UIApp: UIApplication!
 
 public final class UIApplication: UIResponder {
     
@@ -199,7 +199,7 @@ fileprivate extension UIApplication {
 }
 // MARK: - Supporting Types
 
-public protocol UIApplicationDelegate: class {
+public protocol UIApplicationDelegate: AnyObject {
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]?) -> Bool
     

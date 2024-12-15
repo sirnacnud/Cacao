@@ -14,15 +14,15 @@ public struct UIFocusHeading : OptionSet {
         self.rawValue = rawValue
     }
     
-    public static let up: UIFocusHeading = .init(rawValue: 1 << 0)
+    public static var up: UIFocusHeading { .init(rawValue: 1 << 0) }
     
-    public static let down: UIFocusHeading = .init(rawValue: 1 << 1)
+    public static var down: UIFocusHeading { .init(rawValue: 1 << 1) }
     
-    public static let left: UIFocusHeading = .init(rawValue: 1 << 2)
+    public static var left: UIFocusHeading { .init(rawValue: 1 << 2) }
     
-    public static let right: UIFocusHeading = .init(rawValue: 1 << 3)
+    public static var right: UIFocusHeading { .init(rawValue: 1 << 3) }
     
-    public static let next: UIFocusHeading = .init(rawValue: 1 << 4)
+    public static var next: UIFocusHeading { .init(rawValue: 1 << 4) }
     
-    public static let previous: UIFocusHeading = .init(rawValue: 1 << 5)
+    public static var previous: UIFocusHeading { .init(rawValue: 1 << 5) }
 }

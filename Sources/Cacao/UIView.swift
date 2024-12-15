@@ -986,9 +986,9 @@ open class UIView: UIResponder {
     
     // MARK: - Animating Views with Block Objects
     
-    internal private(set) static var animationDuration: TimeInterval?
+    internal nonisolated(unsafe) private(set) static var animationDuration: TimeInterval?
     
-    internal static var animations = [Animation]()
+    internal nonisolated(unsafe) static var animations = [Animation]()
     
     /// Animate changes to one or more views using the specified duration.
     public class func animate(withDuration duration: TimeInterval, animations: @escaping () -> ()) {
@@ -1066,40 +1066,40 @@ final class ReferenceWritableKeyPath<Value, Property> {
 
 // MARK: - Xcode Quick Look
 
-#if os(macOS) && Xcode
+#if os(macOS)
+
+import class AppKit.NSImage
+import class Foundation.NSString
+
+public extension UIView {
     
-    import class AppKit.NSImage
-    import class Foundation.NSString
-    
-    public extension UIView {
+    @objc(debugQuickLookObject)
+    var debugQuickLookObject: AnyObject {
         
-        @objc(debugQuickLookObject)
-        public var debugQuickLookObject: AnyObject {
+        if let cachedTexture = self.texture,
+            let screen = self.window?.screen {
             
-            if let cachedTexture = self.texture,
-                let screen = self.window?.screen {
+            let scale = screen.scale
+            let nativeSize = (width: Int(bounds.size.width * scale),
+                              height: Int(bounds.size.height * scale))
+            
+            let surface = try! cachedTexture.withUnsafeMutableBytes {
                 
-                let scale = screen.scale
-                let nativeSize = (width: Int(bounds.size.width * scale),
-                                  height: Int(bounds.size.height * scale))
-                
-                let surface = try! cachedTexture.withUnsafeMutableBytes {
-                    
-                    try Cairo.Surface.Image(mutableBytes: $0.assumingMemoryBound(to: UInt8.self), format: .argb32, width: nativeSize.width, height: nativeSize.height, stride: $1)
-                }
-                
-                let data = try! surface!.writePNG()
-                
-                let image = NSImage(data: data)!
-                
-                return image
-                
-            } else {
-                
-                return "\(self)" as NSString
+                try Cairo.Surface.Image(mutableBytes: $0.assumingMemoryBound(to: UInt8.self), format: .argb32, width: nativeSize.width, height: nativeSize.height, stride: $1)
             }
+            
+            let data = try! surface!.writePNG()
+            
+            let image = NSImage(data: data)!
+            
+            return image
+            
+        } else {
+            
+            return "\(self)" as NSString
         }
     }
+}
     
 #endif
 

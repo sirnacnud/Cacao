@@ -21,7 +21,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     #if os(iOS)
     static var shared: AppDelegate { return UIApplication.shared.delegate as! AppDelegate }
     #else
-    static let shared: AppDelegate = AppDelegate()
+    nonisolated(unsafe) static let shared: AppDelegate = AppDelegate()
     #endif
     
     var window: UIWindow?

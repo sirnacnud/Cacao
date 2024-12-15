@@ -14,7 +14,7 @@ import Silica
 public final class UIScreen {
     
     public static var main: UIScreen { return _main }
-    internal static var _main: UIScreen!
+    internal nonisolated(unsafe) static var _main: UIScreen!
     
     public static var screens: [UIScreen] { return [UIScreen.main] }
     
@@ -65,7 +65,7 @@ public final class UIScreen {
         
         // update values
         self.updateSize()
-        try self.renderer.setDrawColor((0x00, 0x00, 0x00, 0xFF))
+        try self.renderer.setDrawColor(red: 0x00, green: 0x00, blue: 0x00, alpha: 0xFF)
     }
     
     // MARK: - Methods

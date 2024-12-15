@@ -17,9 +17,9 @@ class UISwitchStyleKit {
     //// Cache
 
     private struct Cache {
-        static let defaultOnColor: UIColor = UIColor(red: 0.267, green: 0.859, blue: 0.369, alpha: 1.000)
-        static let defaultThumbColor: UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
-        static let defaultStrokeColor: UIColor = UIColor(red: 0.687, green: 0.677, blue: 0.675, alpha: 1.000)
+        nonisolated(unsafe) static let defaultOnColor: UIColor = UIColor(red: 0.267, green: 0.859, blue: 0.369, alpha: 1.000)
+        nonisolated(unsafe) static let defaultThumbColor: UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
+        nonisolated(unsafe) static let defaultStrokeColor: UIColor = UIColor(red: 0.687, green: 0.677, blue: 0.675, alpha: 1.000)
     }
 
     //// Colors

@@ -8,6 +8,7 @@
 import Foundation
 
 /// Options for automatic view resizing.
+@preconcurrency
 public struct UIViewAutoresizing : OptionSet {
     
     public let rawValue: Int
