@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreFoundation
 import CSDL2
 import SDL
 import Silica
@@ -191,7 +192,9 @@ fileprivate extension UIApplication {
         // register for changes, if possible
         
         // get main run loop
-        let mainRunLoop = RunLoop.main
+        guard let mainRunLoop = CFRunLoopGetMain() else {
+            return
+        }
         
         // install the run loop source for the event dispatcher
         self.eventDispatcher.installEventRunLoopSources(mainRunLoop)

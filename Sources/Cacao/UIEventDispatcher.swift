@@ -17,7 +17,7 @@ internal final class UIEventDispatcher {
     // mainEnvironment
     let environment: UIEventEnvironment
     
-    fileprivate var runLoop: RunLoop?
+    fileprivate var runLoop: CFRunLoop?
     
     fileprivate weak var handleEventQueueRunLoopSource: CFRunLoopSource?
     
@@ -36,7 +36,7 @@ internal final class UIEventDispatcher {
     
     // MARK: - Methods
     
-    internal func installEventRunLoopSources(_ runLoop: RunLoop) {
+    internal func installEventRunLoopSources(_ runLoop: CFRunLoop) {
         
         assert(self.runLoop == nil, "RunLoop already installed")
         
@@ -55,13 +55,13 @@ internal final class UIEventDispatcher {
         sourceContext.info = Unmanaged.passUnretained(environment).toOpaque()
         sourceContext.perform = _handleEventQueue
         source = CFRunLoopSourceCreate(nil, .max, &sourceContext)
-        CFRunLoopAddSource(runLoop.getCFRunLoop(), source, runLoopMode)
+        CFRunLoopAddSource(runLoop, source, runLoopMode)
         self.handleEventQueueRunLoopSource = source
         
         sourceContext.info = Unmanaged.passUnretained(self).toOpaque()
         sourceContext.perform = _handleHIDEventFetcherDrain
         source = CFRunLoopSourceCreate(nil, .max, &sourceContext)
-        CFRunLoopAddSource(runLoop.getCFRunLoop(), source, runLoopMode)
+        CFRunLoopAddSource(runLoop, source, runLoopMode)
         self.collectHIDEventsRunLoopSource = source
     }
     
@@ -81,7 +81,7 @@ extension UIEventDispatcher: UIEventFetcherSink {
         assert(self.eventFetcher === eventFetcher)
         
         CFRunLoopSourceSignal(collectHIDEventsRunLoopSource)
-        CFRunLoopWakeUp(runLoop?.getCFRunLoop())
+        CFRunLoopWakeUp(runLoop)
     }
 }
 
