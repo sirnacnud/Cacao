@@ -12,9 +12,9 @@ import Cairo
 import Silica
 import Cacao
 
-final class StyleKitTests: XCTestCase {
+final class StyleKitTests: XCTestCase, @unchecked Sendable {
     
-    static let allTests: [(String, (StyleKitTests) -> () throws -> Void)] = [("testSimpleShapes", testSimpleShapes), ("testAdvancedShapes", testAdvancedShapes), ("testDrawSingleLineText", testDrawSingleLineText), ("testDrawMultilineText", testDrawMultilineText)]
+    static let allTests = [("testSimpleShapes", testSimpleShapes), ("testAdvancedShapes", testAdvancedShapes), ("testDrawSingleLineText", testDrawSingleLineText), ("testDrawMultilineText", testDrawMultilineText)]
     
     func testSimpleShapes() {
         

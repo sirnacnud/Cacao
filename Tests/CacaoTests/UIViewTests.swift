@@ -10,7 +10,7 @@ import Foundation
 import Silica
 @testable import Cacao
 
-final class UIViewTests: XCTestCase {
+final class UIViewTests: XCTestCase, @unchecked Sendable {
     
     static let allTests = [
         ("testHitTest", testHitTest),

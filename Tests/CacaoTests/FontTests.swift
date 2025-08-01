@@ -8,8 +8,9 @@
 
 import XCTest
 import Cacao
+import Silica
 
-final class FontTests: XCTestCase {
+final class FontTests: XCTestCase, @unchecked Sendable {
     
     static let allTests = [("testCreateFont", testCreateFont)]
     

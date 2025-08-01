@@ -12,19 +12,19 @@ import Silica
 import SDL
 @testable import Cacao
 
-final class RenderingTests: XCTestCase {
+final class RenderingTests: XCTestCase, @unchecked Sendable {
     
     static let allTests = [("testViewSurface", testViewSurface)]
 
-    func testViewSurface() {
+    func testViewSurface() throws {
         
         let imageSize = CGSize(width: 240, height: 120)
         
-        let window = Window(title: "\(#function)", frame: (x: .undefined, y: .undefined, width: Int(imageSize.width), height: Int(imageSize.height)))!
+        let window = try SDLWindow(title: "\(#function)", frame: (x: .undefined, y: .undefined, width: Int(imageSize.width), height: Int(imageSize.height)))
         
-        let screen = UIScreen(window: window, size: imageSize)
-        UIScreen.main = screen
-        defer { UIScreen.main = nil }
+        let screen = try UIScreen(window: window, size: imageSize)
+        UIScreen._main = screen
+        defer { UIScreen._main = nil }
         
         let view = TestView(frame: CGRect(origin: .zero, size: imageSize))
         
@@ -39,11 +39,12 @@ final class RenderingTests: XCTestCase {
             let filePath = TestPath.testData + "testViewSurface\(frame).txt"
             
             // render
-            screen.update()
+            try screen.update()
             
             // get surface data
             guard let texture = view.texture,
-                let surfaceData = texture.withUnsafeMutableBytes({ Data.init(bytesNoCopy: $0, count: texture.height * $1, deallocator: .none) })
+                case let attributes = try texture.attributes(),
+                let surfaceData = try texture.withUnsafeMutableBytes({ Data.init(bytesNoCopy: $0, count: attributes.height * $1, deallocator: .none) })
                 else { XCTFail("Could not get surface data"); return }
             
             let base64 = surfaceData.base64EncodedString(options: Data.Base64EncodingOptions())
